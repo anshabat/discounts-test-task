@@ -1,12 +1,12 @@
-type BulkPricing = {
+export type BulkPricingType = {
   amount: number;
   totalPrice: number;
 } | null;
 
-export type Product = {
+export type ProductType = {
   id: number;
   name: string;
   price: number;
   imageURL: string;
-  bulkPricing: BulkPricing;
+  bulkPricing: BulkPricingType;
 };

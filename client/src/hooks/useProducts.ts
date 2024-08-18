@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Product } from "../model/product";
+import { ProductType } from "../model/product";
 import { fetchProducts } from "../api/products";
 
 export function useProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

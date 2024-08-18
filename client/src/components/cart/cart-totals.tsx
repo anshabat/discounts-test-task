@@ -1,8 +1,8 @@
-import { Product } from "../../model/product";
+import { ProductType } from "../../model/product";
 import Price from "../shared/price";
 
 type Props = {
-  products: Product[];
+  products: ProductType[];
 };
 
 function CartTotals(props: Props) {

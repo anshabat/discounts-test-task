@@ -1,15 +1,17 @@
-import { Product } from "../../model/product";
+import { useCart } from "../../hooks/useCart";
+import { ProductType } from "../../model/product";
 import Time from "../shared/time";
 import CartItems from "./cart-items";
 import CartTotals from "./cart-totals";
 
 type Props = {
-  products: Product[];
+  products: ProductType[];
   dateObj: Date;
 };
 
 function Cart(props: Props) {
   const { dateObj, products } = props;
+  const { cartItems } = useCart(products);
 
   return (
     <div className="py-6 w-[500px] m-auto">
@@ -17,7 +19,7 @@ function Cart(props: Props) {
         <h1 className="text-3xl font-bold text-center">Sales Cart</h1>
         <Time dateObj={dateObj} />
       </div>
-      <CartItems products={products} />
+      <CartItems items={cartItems} />
       <CartTotals products={products} />
     </div>
   );
