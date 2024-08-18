@@ -20,7 +20,7 @@ function Cart(props: Props) {
         <Time dateObj={dateObj} />
       </div>
       <CartItems items={cartItems} updateQuantity={updateQuantity} />
-      <CartTotals products={products} />
+      <CartTotals items={cartItems} />
     </div>
   );
 }

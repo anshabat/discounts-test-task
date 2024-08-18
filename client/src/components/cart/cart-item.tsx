@@ -32,7 +32,10 @@ function CartItem(props: Props) {
         />
       </div>
       <div className="text-right">
-        <Price value={item.totalPrice} />
+        {item.hasDiscount ? (
+          <Price value={item.originalTotalPrice} isOld />
+        ) : null}
+        <Price value={item.totalPrice} isSale={item.hasDiscount} />
       </div>
     </Fragment>
   );
