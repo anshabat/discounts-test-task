@@ -1,0 +1,29 @@
+[
+  {
+    "productId": 3,
+    "repeat": {
+      "period": "weekly",
+      "every": "5"
+    },
+    "type": "bulk",
+    "value": 8
+  },
+  {
+    "productId": 2,
+    "repeat": {
+      "period": "yearly",
+      "every": "01-10"
+    },
+    "type": "percentage",
+    "value": 25
+  },
+  {
+    "productId": 4,
+    "repeat": {
+      "period": "weekly",
+      "every": "2"
+    },
+    "type": "bogo",
+    "value": 2
+  }
+]

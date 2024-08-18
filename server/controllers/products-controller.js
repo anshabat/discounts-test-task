@@ -1,5 +1,5 @@
 const express = require("express");
-const { getProducts } = require("../repositories/products-repository");
+const { getProducts } = require("../data/repository");
 
 const productsController = express.Router();
 
