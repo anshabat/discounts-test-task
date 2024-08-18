@@ -25,6 +25,9 @@ export function useCart(
     );
   }, []);
 
+  /**
+   * Delete a product from the cart
+   */
   const deleteItem = useCallback((productId: number) => {
     setProductQuantities((prev) =>
       prev.filter((p) => p.productId !== productId)
