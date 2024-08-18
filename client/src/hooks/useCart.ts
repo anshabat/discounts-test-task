@@ -1,29 +1,40 @@
 import { useCallback, useMemo, useState } from "react";
-import { BulkPricingType, ProductType } from "../model/product";
-import { CartItemType } from "../model/cart";
+import { ProductType } from "../model/product";
+import { DiscountType } from "../model/discount";
+import { createCartItem } from "../helpers/cart";
 
 type ProductQuantities = { productId: number; quantity: number }[];
-export type UpdateProductQuantity = (
-  productId: number,
-  quantity: number
-) => void;
+export type UpdateCartItem = (productId: number, quantity: number) => void;
+export type DeleteCartItem = (productId: number) => void;
 
-export function useCart(products: ProductType[]) {
-  const initialQuantities = products.map((product) => ({
-    productId: product.id,
-    quantity: 1,
-  }));
+export function useCart(
+  products: ProductType[],
+  discounts: DiscountType[],
+  dateObj: Date
+) {
+  const [productQuantities, setProductQuantities] = useState<ProductQuantities>(
+    () => getInitialProductQuantities(products)
+  );
 
-  const [productQuantities, setProductQuantities] =
-    useState<ProductQuantities>(initialQuantities);
-
-  const updateQuantity = useCallback((productId: number, quantity: number) => {
+  /**
+   * Update the quantity of a product in the cart
+   */
+  const updateItem = useCallback((productId: number, quantity: number) => {
     setProductQuantities((prev) =>
       prev.map((p) => (p.productId === productId ? { ...p, quantity } : p))
     );
   }, []);
 
-  const cartItems: CartItemType[] = useMemo(() => {
+  const deleteItem = useCallback((productId: number) => {
+    setProductQuantities((prev) =>
+      prev.filter((p) => p.productId !== productId)
+    );
+  }, []);
+
+  /**
+   * Create derived cart items for rendering
+   */
+  const cartItems = useMemo(() => {
     return productQuantities.map((productQuantity) => {
       const productData = products.find(
         (p) => p.id === productQuantity.productId
@@ -34,40 +45,25 @@ export function useCart(products: ProductType[]) {
         throw new Error("Product not found");
       }
 
-      return createCartItem(productData, quantity);
+      const discount = discounts.find((d) => d.productId === productData.id);
+
+      return createCartItem({
+        product: productData,
+        quantity,
+        discount,
+        currentDate: dateObj,
+      });
     });
-  }, [products, productQuantities]);
+  }, [products, productQuantities, discounts, dateObj]);
 
-  return { cartItems, updateQuantity };
+  return { cartItems, updateItem, deleteItem };
 }
 
-function createCartItem(product: ProductType, quantity: number): CartItemType {
-  const { id, name, price, bulkPricing, imageURL } = product;
-  const originalTotalPrice = product.price * quantity;
-  const totalPrice = calculateSalePrice(price, bulkPricing, quantity);
-  const hasDiscount = originalTotalPrice > totalPrice;
-
-  return {
-    id,
-    name,
-    imageURL,
-    originalTotalPrice,
-    totalPrice,
-    quantity: quantity,
-    hasDiscount,
-  };
-}
-
-export function calculateSalePrice(
-  price: number,
-  bulkPricing: BulkPricingType,
-  quantity: number
-) {
-  if (!bulkPricing) return price * quantity;
-
-  const { amount, totalPrice: bulkPrice } = bulkPricing;
-  const bulkQuantity = Math.floor(quantity / amount);
-  const remainingQuantity = quantity % amount;
-
-  return bulkQuantity * bulkPrice + remainingQuantity * price;
+function getInitialProductQuantities(
+  products: ProductType[]
+): ProductQuantities {
+  return products.map((product) => ({
+    productId: product.id,
+    quantity: 1,
+  }));
 }

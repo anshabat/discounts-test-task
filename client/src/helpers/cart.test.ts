@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculateSalePrice } from "../hooks/useCart";
+import { calculateSalePrice } from "./cart";
 
 describe("calculateSalePrice", () => {
   it("should return regular price when bulkPricing is null", () => {
