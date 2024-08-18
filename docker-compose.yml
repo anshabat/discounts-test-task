@@ -1,0 +1,11 @@
+services:
+  server:
+    restart: always
+    build:
+      context: .
+      dockerfile: docker/server/Dockerfile
+    ports:
+      - "${API_PORT}:3000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
