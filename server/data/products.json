@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Brownie",
-      "imageURL": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHdr1eTXEMs68Dx-b_mZT0RpifEQ8so6A1unRsJlyJIPe0LUE2HQ",
+      "imageURL": "https://us.123rf.com/450wm/foxbrother/foxbrother2306/foxbrother230600041/206450961-illustration-of-a-cute-chocolate-chip-cookie-with-a-lovely-smile.jpg",
       "price": 2.00,
       "bulkPricing": {
         "amount": 4,
@@ -33,7 +33,7 @@
     {
       "id": 4,
       "name": "Mini Gingerbread Donut",
-      "imageURL": "https://s3.amazonaws.com/pinchofyum/gingerbread-donuts-22.jpg",
+      "imageURL": "https://katzglutenfree.com/cdn/shop/files/gingerbread_donuts-032.png?v=1722276151&width=519",
       "price": 0.50,
       "bulkPricing": null
     }
