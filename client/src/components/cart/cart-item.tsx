@@ -1,21 +1,21 @@
-import { ChangeEvent, Fragment, useState } from "react";
+import { ChangeEvent, Fragment } from "react";
 import { CartItemType } from "../../model/cart";
 import Price from "../shared/price";
 import Input from "../shared/input";
+import { UpdateProductQuantity } from "../../hooks/useCart";
 
 type Props = {
   item: CartItemType;
+  updateQuantity: UpdateProductQuantity;
 };
 
 function CartItem(props: Props) {
-  const { item } = props;
-
-  const [quantity, setQuantity] = useState(1);
+  const { item, updateQuantity } = props;
 
   const changeQuantityHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     const qty = isNaN(value) || value < 1 ? 1 : value;
-    setQuantity(qty);
+    updateQuantity(item.id, qty);
   };
 
   return (
@@ -27,7 +27,7 @@ function CartItem(props: Props) {
       <div>
         <Input
           type="number"
-          value={quantity}
+          value={item.quantity}
           onChange={changeQuantityHandler}
         />
       </div>

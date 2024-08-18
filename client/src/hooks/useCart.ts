@@ -1,24 +1,51 @@
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { BulkPricingType, ProductType } from "../model/product";
 import { CartItemType } from "../model/cart";
 
+type ProductQuantities = { productId: number; quantity: number }[];
+export type UpdateProductQuantity = (productId: number, quantity: number) => void;
+
 export function useCart(products: ProductType[]) {
-  const initialQuantity = 1;
-  const initialCart: CartItemType[] = products.map((product) => {
-    const { id, name, price, bulkPricing, imageURL } = product;
-    return {
-      id,
-      name,
-      imageURL,
-      originalTotalPrice: price * initialQuantity,
-      totalPrice: calculateSalePrice(price, bulkPricing, initialQuantity),
-      quantity: initialQuantity,
-    };
-  });
+  const initialQuantities = products.map((product) => ({
+    productId: product.id,
+    quantity: 1,
+  }));
 
-  const [cartItems] = useState<CartItemType[]>(initialCart);
+  const [productQuantities, setProductQuantities] =
+    useState<ProductQuantities>(initialQuantities);
 
-  return { cartItems };
+  const updateQuantity = useCallback(
+    (productId: number, quantity: number) => {
+      setProductQuantities((prev) =>
+        prev.map((p) => (p.productId === productId ? { ...p, quantity } : p))
+      );
+    },
+    []
+  );
+
+  const cartItems: CartItemType[] = useMemo(() => {
+    return productQuantities.map((productQuantity) => {
+      const productData = products.find(
+        (p) => p.id === productQuantity.productId
+      );
+      const quantity = productQuantity.quantity;
+      if (!productData) {
+        throw new Error("Product not found");
+      }
+
+      const { id, name, price, bulkPricing, imageURL } = productData;
+      return {
+        id,
+        name,
+        imageURL,
+        originalTotalPrice: price * quantity,
+        totalPrice: calculateSalePrice(price, bulkPricing, quantity),
+        quantity: quantity,
+      };
+    });
+  }, [products, productQuantities]);
+
+  return { cartItems, updateQuantity };
 }
 
 export function calculateSalePrice(

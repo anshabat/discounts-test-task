@@ -11,7 +11,7 @@ type Props = {
 
 function Cart(props: Props) {
   const { dateObj, products } = props;
-  const { cartItems } = useCart(products);
+  const { cartItems, updateQuantity } = useCart(products);
 
   return (
     <div className="py-6 w-[500px] m-auto">
@@ -19,7 +19,7 @@ function Cart(props: Props) {
         <h1 className="text-3xl font-bold text-center">Sales Cart</h1>
         <Time dateObj={dateObj} />
       </div>
-      <CartItems items={cartItems} />
+      <CartItems items={cartItems} updateQuantity={updateQuantity} />
       <CartTotals products={products} />
     </div>
   );
