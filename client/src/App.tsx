@@ -6,11 +6,15 @@ function App() {
   const { loading: productsLoading, products } = useProducts();
   const { loading: discountsLoading, discounts } = useDiscounts();
   const isLoading = productsLoading || discountsLoading;
-  const date = new Date();
+
+  // This is October 1 and Tuesday in the same time, so both discounts should be applied
+  const date = new Date(2024, 9, 1);
 
   return (
     <div className="container py-10 px-20">
-      {isLoading ? <div></div> : <Cart products={products} discounts={discounts} dateObj={date} />}
+      {isLoading ? null : (
+        <Cart products={products} discounts={discounts} dateObj={date} />
+      )}
     </div>
   );
 }

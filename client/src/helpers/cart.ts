@@ -1,6 +1,8 @@
 import { CartItemType } from "../model/cart";
 import { DiscountType } from "../model/discount";
-import { BulkPricingType, ProductType } from "../model/product";
+import { ProductType } from "../model/product";
+import { calculateDiscountPrice } from "./discount";
+import { calculateBulkPrice } from "./product";
 
 type CreateCartItemParams = {
   product: ProductType;
@@ -16,11 +18,15 @@ export function createCartItem({
 }: CreateCartItemParams): CartItemType {
   const { id, name, price, bulkPricing, imageURL } = product;
   const originalTotalPrice = product.price * quantity;
-  const totalPrice = calculateSalePrice(price, bulkPricing, quantity);
+  const bulkPrice = calculateBulkPrice(price, bulkPricing, quantity);
+  const discountPrice = calculateDiscountPrice({
+    price,
+    quantity,
+    discount,
+    currentDate,
+  });
+  const totalPrice = Math.min(discountPrice, bulkPrice);
   const hasDiscount = originalTotalPrice > totalPrice;
-
-  console.log(discount, 'discount')
-  console.log(currentDate, 'currentDate')
 
   return {
     id,
@@ -31,18 +37,4 @@ export function createCartItem({
     quantity: quantity,
     hasDiscount,
   };
-}
-
-export function calculateSalePrice(
-  price: number,
-  bulkPricing: BulkPricingType,
-  quantity: number
-) {
-  if (!bulkPricing) return price * quantity;
-
-  const { amount, totalPrice: bulkPrice } = bulkPricing;
-  const bulkQuantity = Math.floor(quantity / amount);
-  const remainingQuantity = quantity % amount;
-
-  return bulkQuantity * bulkPrice + remainingQuantity * price;
 }

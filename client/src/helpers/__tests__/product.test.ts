@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { calculateSalePrice } from "./cart";
+import { calculateBulkPrice } from "../product";
 
-describe("calculateSalePrice", () => {
+describe("calculateBulkPrice", () => {
   it("should return regular price when bulkPricing is null", () => {
     const price = 2.0;
     const quantity = 4;
-    const result = calculateSalePrice(price, null, quantity);
+    const result = calculateBulkPrice(price, null, quantity);
     expect(result).toBe(8.0);
   });
 
@@ -13,7 +13,7 @@ describe("calculateSalePrice", () => {
     const price = 2.0;
     const bulkPricing = { amount: 4, totalPrice: 7.0 };
     const quantity = 4;
-    const result = calculateSalePrice(price, bulkPricing, quantity);
+    const result = calculateBulkPrice(price, bulkPricing, quantity);
     expect(result).toBe(7.0);
   });
 
@@ -21,7 +21,7 @@ describe("calculateSalePrice", () => {
     const price = 2.0;
     const bulkPricing = { amount: 4, totalPrice: 7.0 };
     const quantity = 3;
-    const result = calculateSalePrice(price, bulkPricing, quantity);
+    const result = calculateBulkPrice(price, bulkPricing, quantity);
     expect(result).toBe(6.0); // 2 * 3 = 6
   });
 
@@ -29,7 +29,7 @@ describe("calculateSalePrice", () => {
     const price = 2.0;
     const bulkPricing = { amount: 4, totalPrice: 7.0 };
     const quantity = 6;
-    const result = calculateSalePrice(price, bulkPricing, quantity);
+    const result = calculateBulkPrice(price, bulkPricing, quantity);
     expect(result).toBe(11.0); // 7 for the first 4 items + 4 for the remaining 2 items
   });
 
@@ -37,7 +37,7 @@ describe("calculateSalePrice", () => {
     const price = 2.0;
     const bulkPricing = { amount: 4, totalPrice: 7.0 };
     const quantity = 8;
-    const result = calculateSalePrice(price, bulkPricing, quantity);
+    const result = calculateBulkPrice(price, bulkPricing, quantity);
     expect(result).toBe(14.0); // 7 for the first 4 items + 7 for the second 4 items
   });
 });

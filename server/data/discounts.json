@@ -6,6 +6,7 @@
       "every": "5"
     },
     "type": "bulk",
+    "amount": 6,
     "value": 8
   },
   {
@@ -15,6 +16,7 @@
       "every": "01-10"
     },
     "type": "percentage",
+    "amount": null,
     "value": 25
   },
   {
@@ -24,6 +26,7 @@
       "every": "2"
     },
     "type": "bogo",
+    "amount": null,
     "value": 2
   }
 ]
