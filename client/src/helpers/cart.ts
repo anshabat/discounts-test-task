@@ -17,6 +17,7 @@ export function createCartItem({
   discount,
 }: CreateCartItemParams): CartItemType {
   const { id, name, price, bulkPricing, imageURL } = product;
+  // TODO: I'm using product.price * quantity logic in multiple places. Consider moving it
   const originalTotalPrice = product.price * quantity;
   const bulkPrice = calculateBulkPrice(price, bulkPricing, quantity);
   const discountPrice = calculateDiscountPrice({
